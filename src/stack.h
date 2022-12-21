@@ -12,11 +12,10 @@
 #define SUCCESS 0
 
 typedef struct stack {
-  double value;
-  double *next;
+  double head;
+  int size;
 } t_stack;
 
-t_stack *newStack();
 int isEmpty(t_stack *pt);
 void push(t_stack *pt, double x);
 double peek(t_stack *pt);

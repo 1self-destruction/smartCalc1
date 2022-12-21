@@ -4,7 +4,6 @@
 #include "stack.h"
 
 int main() {
-  // создаем stack емкостью 5
   struct stack *pt = newStack(5);
 
   push(pt, 1);
