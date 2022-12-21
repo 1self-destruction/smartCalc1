@@ -1,0 +1,75 @@
+\input texinfo
+@setfilename manual
+@settitle SmartCalc_v1.0
+@documentencoding UTF-8
+@chapter  Классический калькулятор
+В калькуляторе реализованы следующие арифметические операции:
+@enumerate
+@item
+a + b
+@item
+a - b
+@item
+a * b
+@item
+a / b
+@item
+a ^ b
+@item
+a mod b
+@item
++a
+@item
+-a
+@item
+(a)
+@end enumerate
+
+@chapter  Умный калькулятор
+Вы можете задать сложное математическое выражение с помощью константы X.
+Введите выражение, нажмите "=" и получите ответ.
+
+В калькуляторе реализованы следующие математические функции:
+@enumerate
+@item
+cos(x)
+@item
+sin(x)
+@item
+tan(x)
+@item
+acos(x)
+@item
+asin(x)
+@item
+atan(x)
+@item
+sqrt(x)
+@item
+ln(x)
+@item
+log(x)
+@end enumerate
+Введите выражение и нажмите знак '=', чтобы получить результат.
+
+@chapter Вывод графика
+
+В калькуляторе реализована возможность построения графиков функций.
+Введите выражение, нажмите кнопку "Output the graph".
+
+@chapter Кредитный калькулятор
+
+Предоставлен специальный режим "Credit":
+
+Ввод: total credit amount, term, interest rate, type (annuity, differentiated)
+Вывод: monthly payment, overpayment on credit, total payment
+
+@chapter Депозитный калькулятор
+
+Предоставлен специальный режим "Deposit":
+
+Ввод: deposit amount, deposit term, interest rate, tax rate, periodicity of payments, capitalization of interest, replenishments list, partial withdrawals list
+Вывод: accrued interest, tax amount, deposit amount by the end of the term
+
+@bye
+
