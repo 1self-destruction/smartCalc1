@@ -1,26 +1,65 @@
 #include "stack.h"
 
-t_stack *create_node (char *data) {
-  t_stack *node = (t_stack *)malloc(sizeof(t_stack));
-  if (node == NULL) {
-    char *msg = "malloc error\n";
-    write(2, msg, (int)strlen(msg));
-    exit(1);
+// Вспомогательная функция для инициализации stack
+struct stack *newStack(int capacity) {
+  struct stack *pt = (struct stack *)malloc(sizeof(struct stack));
+
+  pt->maxsize = capacity;
+  pt->top = -1;
+  pt->items = (int *)malloc(sizeof(int) * capacity);
+
+  return pt;
+}
+
+// Вспомогательная функция для возврата размера stack
+int size(struct stack *pt) { return pt->top + 1; }
+
+// Вспомогательная функция для проверки, пуст stack или нет
+int isEmpty(struct stack *pt) {
+  return pt->top == -1;  // или return size(pt) == 0;
+}
+
+// Вспомогательная функция для проверки, заполнен ли stack или нет
+int isFull(struct stack *pt) {
+  return pt->top == pt->maxsize - 1;  // or return size(pt) == pt->maxsize;
+}
+
+// Вспомогательная функция для добавления элемента `x` в stack
+void push(struct stack *pt, int x) {
+  // проверяем, не заполнен ли уже stack. Тогда вставка элемента будет
+  // привести к переполнению stack
+  if (isFull(pt)) {
+    printf("Overflow\nProgram Terminated\n");
+    exit(EXIT_FAILURE);
   }
-  node->data = data;
-  node->next = NULL;
-  return node;
+
+  printf("Inserting %d\n", x);
+
+  // добавляем элемент и увеличиваем индекс вершины
+  pt->items[++pt->top] = x;
 }
 
-void push(t_stack **stack, char *data) {
-  t_stack *new_node = create_node(data)
-  
-  new_node->next = *stack;
-  *stack = new_node;
+// Вспомогательная функция для возврата верхнего элемента stack
+int peek(struct stack *pt) {
+  // проверка на пустой stack
+  if (!isEmpty(pt)) {
+    return pt->items[pt->top];
+  } else {
+    exit(EXIT_FAILURE);
+  }
 }
 
-void pop(t_stack **stack) {
-  t_stack *tmp = *stack;
-  *stack = tmp->next;
-  free(tmp);
+// Вспомогательная функция для извлечения верхнего элемента из stack
+int pop(struct stack *pt) {
+  // проверка на опустошение stack
+  if (isEmpty(pt)) {
+    printf("Underflow\nProgram Terminated\n");
+    exit(EXIT_FAILURE);
+  }
+
+  printf("Removing %d\n", peek(pt));
+
+  // уменьшаем размер stack на 1 и (необязательно) возвращаем извлеченный
+  // элемент
+  return pt->items[pt->top--];
 }
