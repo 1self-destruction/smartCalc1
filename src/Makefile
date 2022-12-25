@@ -3,10 +3,10 @@ TST_LIB = -lcheck
 OS := $(shell uname -s)
 
 ifeq ($(OS),Linux)
-		TST_LIBS+= -lrt -lm -lpthread -lsubunit
+		TST_LIB+= -lrt -lm -lpthread -lsubunit
 else
 	ifeq ($(OS),Darwin)
-		TST_LIBS+=-lm -lpthread
+		TST_LIB+=-lm -lpthread
 	endif
 endif
 
@@ -45,9 +45,9 @@ dist:
 	cd ../ && tar -czf s21_SmartCalc_v1.0.tgz src
 
 test: SmartCalc.a
-#	$(GCC) tests.c -L. SmartCalc_v1_0.a $(TST_LIBS) -o ./tests.exe
-#	$(GCC) --coverage tests.c SmartCalc_v1_0.c SmartCalc_v1_0.a -L. SmartCalc_v1_0.a $(TST_LIBS) -o ./tests.exe
-#	./tests.exe
+	$(GCC) tests.c -L. SmartCalc_v1_0.a $(TST_LIB) -o ./tests.exe
+	$(GCC) --coverage tests.c SmartCalc_v1_0.c SmartCalc_v1_0.a -L. SmartCalc_v1_0.a $(TST_LIB) -o ./tests.exe
+	./tests.exe
 
 gcov_report: SmartCalc.a test
 	gcov -a -f SmartCalc_v1_0.gcda
@@ -56,15 +56,8 @@ gcov_report: SmartCalc.a test
 
 check:
 	cp ../materials/linters/.clang-format .clang-format
-	clang-format -n SmartCalc/*.c
-	clang-format -n SmartCalc/*.h
-	clang-format -n SmartCalc/*.cpp
-	clang-format -n SmartCalc/*.ui
 	clang-format -n *.c
 	clang-format -n *.h
-	cppcheck SmartCalc/*.c
-	cppcheck --language=c++ SmartCalc/*.cpp
-	cppcheck --language=c++ SmartCalc/*.h
 	cppcheck *.c
 	cppcheck *.h
 
