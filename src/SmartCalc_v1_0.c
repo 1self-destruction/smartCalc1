@@ -143,28 +143,6 @@ void del_lexeme(lexeme* lex) {
     }
 }
 
-void print_lexeme(lexeme* lex) {
-    if (lex->type == 'f') {
-        printf("%s ", lex->s);
-    } else if (lex->type == 'u') {
-        if (lex->c == '-') {
-            printf("M ");
-        } else {
-            printf("P ");
-        }
-    } else if (lex->type == 'o') {
-        printf("%c ", lex->c);
-    } else if (lex->type == '(') {
-        printf("( ");
-    } else if (lex->type == ')') {
-        printf(") ");
-    } else if (lex->type == 'v') {
-        printf("%g ", lex->v);
-    } else if (lex->type == 'x') {
-        printf("x ");
-    }
-}
-
 /**
  * @brief преобразует унарные + и - в специальные лексемы
  **/
@@ -197,9 +175,7 @@ void unary_process(node* lexemes) {
  **/
 lexeme* create_lexeme(char* buf, int state) {
     lexeme* lex = NULL;
-    if (buf == NULL) {
-        // lex NULL;
-    } else if (state == 1) {
+    if (state == 1) {
         lex = (lexeme*)malloc(sizeof(lexeme));
         if (lex != NULL) {
             lex->type = 'v';

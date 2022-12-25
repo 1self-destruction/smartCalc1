@@ -1,10 +1,7 @@
-#include <stdio.h>
-#include <stdlib.h>
-
-#include "stack.h"
+#include "SmartCalc_v1_0.h"
 
 int main() {
-  struct stack *pt = newStack(5);
+
 
   push(pt, 1);
   push(pt, 2);

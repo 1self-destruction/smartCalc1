@@ -47,9 +47,8 @@ void del_list(node* root, int flag_free_elements);
 void del_lexeme(lexeme* lex);
 
 //MAIN_FUNCS
-void print_lexeme(lexeme* lex);
-void unary_process(node* lexemes);
 lexeme* create_lexeme(char* buf, int state);
+void unary_process(node* lexemes);
 node* parse_lexemes(char* in, int* parse_exception_index);
 node* reverse_polish_notation(node* ipn, int* syntax_exception_type);
 double result_polish_notation(double x, char* in, int* error);
