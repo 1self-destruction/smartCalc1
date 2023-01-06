@@ -2,7 +2,7 @@
 
 #include "ui_graph.h"
 
-graph::graph(QWidget* parent) : QDialog(parent), ui(new Ui::graph) {
+graph::graph(QWidget *parent) : QDialog(parent), ui(new Ui::graph) {
   ui->setupUi(this);
   setWindowTitle("Graph");
   QLinearGradient plotGradient;
@@ -69,9 +69,9 @@ void graph::draw_graph() {
     ui->widget->yAxis->setRange(yBegin, yEnd);
     pixelX = ui->widget->xAxis->axisRect()->width();
     QByteArray text = Expression.toLocal8Bit();
-    char* stringExpression = text.data();
+    char *stringExpression = text.data();
     int error;
-    cordinate* graph_points =
+    cordinate *graph_points =
         graph_output_points(xBegin, xEnd, pixelX, stringExpression, &error);
     if (error == 0) {
       for (int i = 0; i < pixelX; i++) {
@@ -122,6 +122,6 @@ void graph::draw_graph() {
   }
 }
 
-void graph::showEvent(QShowEvent*) { draw_graph(); }
+void graph::showEvent(QShowEvent *) { draw_graph(); }
 
 void graph::on_pushButton_ok_clicked() { draw_graph(); }

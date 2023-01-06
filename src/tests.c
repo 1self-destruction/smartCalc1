@@ -395,7 +395,129 @@ START_TEST(test_calculator_error_16) {
 }
 END_TEST
 
-void calc_tests(TCase* tc1_1) {
+START_TEST(test_calculator_deposit_1) {
+  int error = 0;
+  deposit_calculation_result *result =
+      deposit_result(200000, 24, 36.0, 13.0, 1, 0, NULL, NULL, &error);
+  if (error == 0) {
+    ck_assert_float_eq(result->interest_charges, 142027.397260);
+    ck_assert_float_eq(result->tax_amount, 7413.561644);
+    ck_assert_float_eq(result->amount_end_term, 200000.0);
+    free(result);
+  }
+  ck_assert_int_eq(error, 0);
+}
+END_TEST
+
+START_TEST(test_calculator_deposit_2) {
+  int error = 0;
+  deposit_calculation_result *result =
+      deposit_result(200000, 24, 36.0, 13.0, 1, 1, NULL, NULL, &error);
+  if (error == 0) {
+    ck_assert_float_eq(result->interest_charges, 205863.558318);
+    ck_assert_float_eq(result->tax_amount, 15712.262581);
+    ck_assert_float_eq(result->amount_end_term, 405863.558318);
+    free(result);
+  }
+  ck_assert_int_eq(error, 0);
+}
+END_TEST
+
+START_TEST(test_calculator_deposit_3) {
+  int error = 0;
+  deposit_calculation_result *result =
+      deposit_result(200000, 24, 36.0, 13.0, 2, 1, NULL, NULL, &error);
+  if (error == 0) {
+    ck_assert_float_eq(result->interest_charges, 202683.529994);
+    ck_assert_float_eq(result->tax_amount, 15298.858899);
+    ck_assert_float_eq(result->amount_end_term, 402683.529994);
+    free(result);
+  }
+  ck_assert_int_eq(error, 0);
+}
+END_TEST
+
+START_TEST(test_calculator_deposit_4) {
+  int error = 0;
+  deposit_calculation_result *result =
+      deposit_result(200000, 24, 36.0, 13.0, 3, 1, NULL, NULL, &error);
+  if (error == 0) {
+    ck_assert_float_eq(result->interest_charges, 194920.776448);
+    ck_assert_float_eq(result->tax_amount, 14289.700938);
+    ck_assert_float_eq(result->amount_end_term, 394920.776448);
+    free(result);
+  }
+  ck_assert_int_eq(error, 0);
+}
+END_TEST
+
+START_TEST(test_calculator_deposit_5) {
+  int error = 0;
+  deposit_calculation_result *result =
+      deposit_result(200000, 24, 36.0, 13.0, 4, 1, NULL, NULL, &error);
+  // printf("1= %lf\n", result->interest_charges);
+  //     printf("2= %lf\n", result->tax_amount);
+  //     printf("3= %lf\n", result->amount_end_term);
+  if (error == 0) {
+    ck_assert_float_eq(result->interest_charges, 184524.647281);
+    ck_assert_float_eq(result->tax_amount, 12938.204146);
+    ck_assert_float_eq(result->amount_end_term, 384524.647281);
+    free(result);
+  }
+  ck_assert_int_eq(error, 0);
+}
+END_TEST
+
+START_TEST(test_calculator_deposit_6) {
+  int error = 0;
+  deposit_calculation_result *result = deposit_result(
+      200000, 24, 36.0, 13.0, 4, 1, "25:50000;", "54:25000;", &error);
+  if (error == 0) {
+    ck_assert_float_eq(result->interest_charges, 207751.266898);
+    ck_assert_float_eq(result->tax_amount, 15957.664697);
+    ck_assert_float_eq(result->amount_end_term, 432751.266898);
+    free(result);
+  }
+  ck_assert_int_eq(error, 0);
+}
+END_TEST
+
+START_TEST(test_calculator_deposit_7) {
+  int error = 0;
+  deposit_calculation_result *result =
+      deposit_result(200000, 24, 36.0, 13.0, 4, 1, "25:50000;30:100000;",
+                     "54:25000;80:35000;", &error);
+  if (error == 0) {
+    ck_assert_float_eq(result->interest_charges, 267399.699849);
+    ck_assert_float_eq(result->tax_amount, 23711.960980);
+    ck_assert_float_eq(result->amount_end_term, 557399.699849);
+    free(result);
+  }
+  ck_assert_int_eq(error, 0);
+}
+END_TEST
+
+START_TEST(test_calculator_deposit_8) {
+  int error = 0;
+  deposit_calculation_result *result =
+      deposit_result(200000, 24, 36.0, 13.0, 4, 1, "25:50000;30:100000",
+                     "54:25000;80:35000;", &error);
+  ck_assert_int_eq(error, 2);
+  free(result);
+}
+END_TEST
+
+START_TEST(test_calculator_deposit_9) {
+  int error = 0;
+  deposit_calculation_result *result =
+      deposit_result(200000, 24, 36.0, 13.0, 4, 1, "25:50000;30:100000;",
+                     "54:25000;8035000", &error);
+  ck_assert_int_eq(error, 2);
+  free(result);
+}
+END_TEST
+
+void calc_tests(TCase *tc1_1) {
   tcase_add_test(tc1_1, test_calculator_1);
   tcase_add_test(tc1_1, test_calculator_2);
   tcase_add_test(tc1_1, test_calculator_3);
@@ -432,12 +554,21 @@ void calc_tests(TCase* tc1_1) {
   tcase_add_test(tc1_1, test_calculator_error_14);
   tcase_add_test(tc1_1, test_calculator_error_15);
   tcase_add_test(tc1_1, test_calculator_error_16);
+  tcase_add_test(tc1_1, test_calculator_deposit_1);
+  tcase_add_test(tc1_1, test_calculator_deposit_2);
+  tcase_add_test(tc1_1, test_calculator_deposit_3);
+  tcase_add_test(tc1_1, test_calculator_deposit_4);
+  tcase_add_test(tc1_1, test_calculator_deposit_5);
+  tcase_add_test(tc1_1, test_calculator_deposit_6);
+  tcase_add_test(tc1_1, test_calculator_deposit_7);
+  tcase_add_test(tc1_1, test_calculator_deposit_8);
+  tcase_add_test(tc1_1, test_calculator_deposit_9);
 }
 
 int main(void) {
-  Suite* s1 = suite_create("Core");
-  TCase* tc1_1 = tcase_create("Core");
-  SRunner* sr = srunner_create(s1);
+  Suite *s1 = suite_create("Core");
+  TCase *tc1_1 = tcase_create("Core");
+  SRunner *sr = srunner_create(s1);
   int nf;
 
   suite_add_tcase(s1, tc1_1);
