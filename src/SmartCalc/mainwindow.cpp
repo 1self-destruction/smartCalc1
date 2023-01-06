@@ -2,7 +2,7 @@
 
 #include "./ui_mainwindow.h"
 
-MainWindow::MainWindow(QWidget* parent)
+MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {
   ui->setupUi(this);
   setWindowTitle("SmartCalc");
@@ -46,7 +46,7 @@ MainWindow::MainWindow(QWidget* parent)
 MainWindow::~MainWindow() { delete ui; }
 
 void MainWindow::numbers() {
-  QPushButton* button = (QPushButton*)sender();
+  QPushButton *button = (QPushButton *)sender();
   if (ui->pushButton_equal->isChecked() ||
       ui->result->text().contains("Error! Division by zero!") ||
       ui->result->text().contains("Error! in expression!") ||
@@ -63,7 +63,7 @@ void MainWindow::numbers() {
 }
 
 void MainWindow::operations() {
-  QPushButton* button = (QPushButton*)sender();
+  QPushButton *button = (QPushButton *)sender();
   if (ui->result->text().contains("Error! Division by zero!") ||
       ui->result->text().contains("Error! in expression!") ||
       ui->result->text().contains("The number is infinity!") ||
@@ -83,7 +83,7 @@ void MainWindow::operations() {
 }
 
 void MainWindow::brackets() {
-  QPushButton* button = (QPushButton*)sender();
+  QPushButton *button = (QPushButton *)sender();
   if (ui->pushButton_equal->isChecked() ||
       ui->result->text().contains("Error! Division by zero!") ||
       ui->result->text().contains("Error! in expression!") ||
@@ -98,7 +98,7 @@ void MainWindow::brackets() {
 }
 
 void MainWindow::functions() {
-  QPushButton* button = (QPushButton*)sender();
+  QPushButton *button = (QPushButton *)sender();
   if (ui->pushButton_equal->isChecked() ||
       ui->result->text().contains("Error! Division by zero!") ||
       ui->result->text().contains("Error! in expression!") ||
@@ -138,7 +138,7 @@ void MainWindow::on_pushButton_equal_clicked() {
   ui->pushButton_equal->setChecked(true);
   QString label = ui->result->text();
   QByteArray text = label.toLocal8Bit();
-  char* string = text.data();
+  char *string = text.data();
   int error;
   double res = result_polish_notation(x, string, &error);
   if (error == 0) {

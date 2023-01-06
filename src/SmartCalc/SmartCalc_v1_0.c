@@ -1,26 +1,26 @@
 #include "SmartCalc_v1_0.h"
 
-stack* init_stack() {
-  stack* stack = malloc(sizeof(stack));
+stack *init_stack() {
+  stack *stack = malloc(sizeof(stack));
   stack->top = init_list(NULL);
   return stack;
 }
 
-void push(stack* stack, lexeme* lex) { add(stack->top, lex); }
+void push(stack *stack, lexeme *lex) { add(stack->top, lex); }
 
-lexeme* pop(stack* stack) {
-  node* elem_node = stack->top->next;
+lexeme *pop(stack *stack) {
+  node *elem_node = stack->top->next;
   if (elem_node == NULL) {
     return NULL;
   } else {
-    lexeme* lex = elem_node->lex;
+    lexeme *lex = elem_node->lex;
     stack->top = del_elem(elem_node, stack->top);
     return lex;
   }
 }
 
-lexeme* peek(stack* stack) {
-  node* elem_node = stack->top->next;
+lexeme *peek(stack *stack) {
+  node *elem_node = stack->top->next;
   if (elem_node == NULL) {
     return NULL;
   } else {
@@ -28,7 +28,7 @@ lexeme* peek(stack* stack) {
   }
 }
 
-int is_empty(stack* stack) {
+int is_empty(stack *stack) {
   if (stack->top->next == NULL) {
     return 1;
   } else {
@@ -36,7 +36,7 @@ int is_empty(stack* stack) {
   }
 }
 
-void del_stack(stack* stack, int flag) {
+void del_stack(stack *stack, int flag) {
   if (flag == 0) {
     if (stack != NULL) {
       del_list(stack->top, 0);
@@ -52,8 +52,8 @@ void del_stack(stack* stack, int flag) {
   }
 }
 
-node* init_list(lexeme* lex) {
-  node* list = (node*)malloc(sizeof(node));
+node *init_list(lexeme *lex) {
+  node *list = (node *)malloc(sizeof(node));
   if (list != NULL) {
     list->lex = lex;
     list->next = NULL;
@@ -61,10 +61,10 @@ node* init_list(lexeme* lex) {
   return list;
 }
 
-node* add(node* elem, lexeme* lex) {
+node *add(node *elem, lexeme *lex) {
   if (elem != NULL) {
-    node* afterNext = elem->next;
-    node* newNode = init_list(lex);
+    node *afterNext = elem->next;
+    node *newNode = init_list(lex);
     elem->next = newNode;
     newNode->next = afterNext;
     return newNode;
@@ -73,12 +73,12 @@ node* add(node* elem, lexeme* lex) {
   }
 }
 
-node* del_elem(node* elem, node* root) {
+node *del_elem(node *elem, node *root) {
   if (elem == NULL || root == NULL) {
     return root;
   } else {
-    node* prev = NULL;
-    node* p = root;
+    node *prev = NULL;
+    node *p = root;
     while (p != NULL && prev == NULL) {
       if (p->next == elem) {
         prev = p;
@@ -88,7 +88,7 @@ node* del_elem(node* elem, node* root) {
     }
     if (prev == NULL) {
       if (root == elem) {
-        node* newRoot = root->next;
+        node *newRoot = root->next;
         free(elem);
         return newRoot;
       } else {
@@ -102,11 +102,11 @@ node* del_elem(node* elem, node* root) {
   }
 }
 
-node* add_to_end(node* root, lexeme* lex) {
+node *add_to_end(node *root, lexeme *lex) {
   if (root == NULL) {
     root = init_list(lex);
   } else {
-    node* p = root;
+    node *p = root;
     while (p->next != NULL) {
       p = p->next;
     }
@@ -115,10 +115,10 @@ node* add_to_end(node* root, lexeme* lex) {
   return root;
 }
 
-void del_list(node* root, int flag_free_elements) {
-  node* p = root;
+void del_list(node *root, int flag_free_elements) {
+  node *p = root;
   while (p != NULL) {
-    node* currentNode = p;
+    node *currentNode = p;
     p = p->next;
     if (flag_free_elements == 1) {
       if (currentNode->lex != NULL) {
@@ -130,7 +130,7 @@ void del_list(node* root, int flag_free_elements) {
   }
 }
 
-void del_lexeme(lexeme* lex) {
+void del_lexeme(lexeme *lex) {
   if (lex != NULL) {
     if (lex->s != NULL) {
       free(lex->s);
@@ -144,9 +144,9 @@ void del_lexeme(lexeme* lex) {
 /**
  * @brief преобразует унарные + и - в специальные лексемы
  **/
-void unary_process(node* lexemes) {
-  lexeme* prev_lexeme = NULL;
-  node* p = lexemes;
+void unary_process(node *lexemes) {
+  lexeme *prev_lexeme = NULL;
+  node *p = lexemes;
   while (p != NULL) {
     // Если предыдущая лексема оператор или откр.скобка либо предыдущей лексемы
     // нет, а текущая лексема - или +, то текущая лексема унарная
@@ -171,10 +171,10 @@ void unary_process(node* lexemes) {
  * 4: (, );
  * @return lexeme
  **/
-lexeme* create_lexeme(char* buf, int state) {
-  lexeme* lex = NULL;
+lexeme *create_lexeme(char *buf, int state) {
+  lexeme *lex = NULL;
   if (state == 1) {
-    lex = (lexeme*)malloc(sizeof(lexeme));
+    lex = (lexeme *)malloc(sizeof(lexeme));
     if (lex != NULL) {
       lex->type = 'v';
       lex->s = NULL;
@@ -197,7 +197,7 @@ lexeme* create_lexeme(char* buf, int state) {
         strcmp(buf, "sqrt") == 0 || strcmp(buf, "ln") == 0 ||
         strcmp(buf, "log") == 0 || strcmp(buf, "mod") == 0 ||
         strcmp(buf, "x") == 0) {
-      lex = (lexeme*)malloc(sizeof(lexeme));
+      lex = (lexeme *)malloc(sizeof(lexeme));
       if (lex != NULL) {
         if (strcmp(buf, "mod") == 0) {
           lex->type = 'o';
@@ -211,7 +211,7 @@ lexeme* create_lexeme(char* buf, int state) {
           lex->v = 0.0;
         } else {
           lex->type = 'f';
-          lex->s = (char*)malloc((strlen(buf) + 1) * sizeof(char));
+          lex->s = (char *)malloc((strlen(buf) + 1) * sizeof(char));
           strcpy(lex->s, buf);
           lex->c = '0';
           lex->v = 0.0;
@@ -219,7 +219,7 @@ lexeme* create_lexeme(char* buf, int state) {
       }
     }
   } else if (state == 3) {
-    lex = (lexeme*)malloc(sizeof(lexeme));
+    lex = (lexeme *)malloc(sizeof(lexeme));
     if (lex != NULL) {
       lex->type = 'o';
       lex->s = NULL;
@@ -227,7 +227,7 @@ lexeme* create_lexeme(char* buf, int state) {
       lex->v = 0.0;
     }
   } else if (state == 4) {
-    lex = (lexeme*)malloc(sizeof(lexeme));
+    lex = (lexeme *)malloc(sizeof(lexeme));
     if (lex != NULL) {
       lex->type = *buf;
       lex->s = NULL;
@@ -243,13 +243,13 @@ lexeme* create_lexeme(char* buf, int state) {
  * @param parse_exception_index если 0 функция отработала хорошо, иначе ошибка;
  * @return возвращает список лексем;
  **/
-node* parse_lexemes(char* in, int* parse_exception_index) {
-  node* lexemes = NULL;
+node *parse_lexemes(char *in, int *parse_exception_index) {
+  node *lexemes = NULL;
   *parse_exception_index = 2;
   if (in != NULL && strlen(in) != 0) {
     *parse_exception_index = 0;
-    char* cin = in;
-    char* buf = NULL;
+    char *cin = in;
+    char *buf = NULL;
     int size_malloc = 0;
     int n = 0;
 
@@ -265,7 +265,7 @@ node* parse_lexemes(char* in, int* parse_exception_index) {
         if ((*cin >= '0' && *cin <= '9') || *cin == '.') {
           if (state != 1 && state != 0) {
             buf[n] = '\0';
-            lexeme* lex = create_lexeme(buf, state);
+            lexeme *lex = create_lexeme(buf, state);
             if (lex == NULL) {
               *parse_exception_index = 1;
               break;
@@ -277,7 +277,7 @@ node* parse_lexemes(char* in, int* parse_exception_index) {
         } else if (*cin >= 'a' && *cin <= 'z') {
           if (state != 2 && state != 0) {
             buf[n] = '\0';
-            lexeme* lex = create_lexeme(buf, state);
+            lexeme *lex = create_lexeme(buf, state);
             if (lex == NULL) {
               *parse_exception_index = 1;
               break;
@@ -290,7 +290,7 @@ node* parse_lexemes(char* in, int* parse_exception_index) {
                    *cin == '^') {
           if (state != 0) {
             buf[n] = '\0';
-            lexeme* lex = create_lexeme(buf, state);
+            lexeme *lex = create_lexeme(buf, state);
             if (lex == NULL) {
               *parse_exception_index = 1;
               break;
@@ -302,7 +302,7 @@ node* parse_lexemes(char* in, int* parse_exception_index) {
         } else if (*cin == '(' || *cin == ')') {
           if (state != 0) {
             buf[n] = '\0';
-            lexeme* lex = create_lexeme(buf, state);
+            lexeme *lex = create_lexeme(buf, state);
             if (lex == NULL) {
               *parse_exception_index = 1;
               break;
@@ -314,7 +314,7 @@ node* parse_lexemes(char* in, int* parse_exception_index) {
         } else if (*cin == '\0' || *cin == '=') {
           if (state != 0) {
             buf[n] = '\0';
-            lexeme* lex = create_lexeme(buf, state);
+            lexeme *lex = create_lexeme(buf, state);
             if (lex == NULL) {
               *parse_exception_index = 1;
               break;
@@ -326,7 +326,7 @@ node* parse_lexemes(char* in, int* parse_exception_index) {
         } else if (*cin == ' ' && state != 0) {
           buf[n] = '\0';
           if (strcmp(buf, "x") == 0) {
-            lexeme* lex = create_lexeme(buf, state);
+            lexeme *lex = create_lexeme(buf, state);
             if (lex == NULL) {
               *parse_exception_index = 1;
               break;
@@ -335,7 +335,7 @@ node* parse_lexemes(char* in, int* parse_exception_index) {
             n = 0;
             state = 0;
           } else if (strcmp(buf, "mod") == 0) {
-            lexeme* lex = create_lexeme(buf, state);
+            lexeme *lex = create_lexeme(buf, state);
             if (lex == NULL) {
               *parse_exception_index = 1;
               break;
@@ -348,7 +348,7 @@ node* parse_lexemes(char* in, int* parse_exception_index) {
         if (*cin != ' ' && *parse_exception_index == 0) {
           if (size_malloc <= n) {
             size_malloc += 10;
-            char* tmp = (char*)realloc(buf, (size_malloc + 1) * sizeof(char));
+            char *tmp = (char *)realloc(buf, (size_malloc + 1) * sizeof(char));
             if (tmp == NULL) {
               *parse_exception_index = 1;
               break;
@@ -381,14 +381,14 @@ node* parse_lexemes(char* in, int* parse_exception_index) {
  *          0: OK;
  *          1: несовместимые скобки;
  **/
-node* reverse_polish_notation(node* ipn, int* syntax_exception_type) {
+node *reverse_polish_notation(node *ipn, int *syntax_exception_type) {
   *syntax_exception_type = 0;
-  node* clear = NULL;
-  node* result = NULL;
+  node *clear = NULL;
+  node *result = NULL;
 
   if (ipn != NULL) {
-    stack* Stack = init_stack();
-    node* cipn = ipn;
+    stack *Stack = init_stack();
+    node *cipn = ipn;
     while (cipn != NULL && *syntax_exception_type == 0) {
       if (cipn->lex->type == 'f' || cipn->lex->type == 'u') {
         if (cipn->lex->type == 'u') {
@@ -407,7 +407,7 @@ node* reverse_polish_notation(node* ipn, int* syntax_exception_type) {
           }
         }
       } else if (cipn->lex->type == 'o') {
-        lexeme* op1 = cipn->lex;
+        lexeme *op1 = cipn->lex;
 
         /*
         Пока присутствует на вершине стека лексема-оператор (op2) чей приоритет
@@ -416,7 +416,7 @@ node* reverse_polish_notation(node* ipn, int* syntax_exception_type) {
         */
         // Переложить op2 из стека в выходную очередь:
         while (is_empty(Stack) == 0) {
-          lexeme* op2 = peek(Stack);
+          lexeme *op2 = peek(Stack);
           if ((op2->type != 'o' && op2->type != 'u') ||
               (op1->c == '^' && op2->c != '^') ||
               ((op1->c == '*' || op1->c == '/' || op1->c == 'm') &&
@@ -439,7 +439,7 @@ node* reverse_polish_notation(node* ipn, int* syntax_exception_type) {
         */
         int open_bracket_found = 0;
         while (is_empty(Stack) == 0) {
-          lexeme* op2 = peek(Stack);
+          lexeme *op2 = peek(Stack);
           if (op2->type != '(') {
             pop(Stack);
             result = add_to_end(result, op2);
@@ -461,7 +461,7 @@ node* reverse_polish_notation(node* ipn, int* syntax_exception_type) {
 
         // Если токен на вершине стека — функция, переложить её в выходную
         // очередь.
-        lexeme* op2 = peek(Stack);
+        lexeme *op2 = peek(Stack);
         if (op2 != NULL && op2->type == 'f') {
           pop(Stack);
           result = add_to_end(result, op2);
@@ -480,7 +480,7 @@ node* reverse_polish_notation(node* ipn, int* syntax_exception_type) {
       переложить оператор из стека в выходную очередь.
       */
       while (is_empty(Stack) == 0) {
-        lexeme* op2 = peek(Stack);
+        lexeme *op2 = peek(Stack);
 
         if (op2->type == 'o' || op2->type == 'u' || op2->type == 'f') {
           pop(Stack);
@@ -506,7 +506,7 @@ node* reverse_polish_notation(node* ipn, int* syntax_exception_type) {
         }
         del_stack(Stack, 0);
         while (cipn != NULL) {
-          node* p = cipn;
+          node *p = cipn;
           del_lexeme(p->lex);
           cipn = cipn->next;
         }
@@ -528,11 +528,11 @@ node* reverse_polish_notation(node* ipn, int* syntax_exception_type) {
   return result;
 }
 
-double result_polish_notation(double x, char* in, int* error) {
+double result_polish_notation(double x, char *in, int *error) {
   double res = 0;
-  node* inp = parse_lexemes(in, error);
+  node *inp = parse_lexemes(in, error);
   if (*error == 0) {
-    node* rpn = reverse_polish_notation(inp, error);
+    node *rpn = reverse_polish_notation(inp, error);
     if (rpn != NULL) {
       if (*error == 0) {
         res = evaluate(x, rpn, error);
@@ -557,24 +557,24 @@ double result_polish_notation(double x, char* in, int* error) {
  * 4: ошибка функции, ln, log, sqrt не могут быть отрицательными;
  * @return double
  **/
-double evaluate(double x, node* lexemes_rpn, int* exec_exception_type) {
+double evaluate(double x, node *lexemes_rpn, int *exec_exception_type) {
   *exec_exception_type = 0;
 
-  stack* Stack = init_stack();
-  node* garbage = NULL;
+  stack *Stack = init_stack();
+  node *garbage = NULL;
 
-  node* p = lexemes_rpn;
+  node *p = lexemes_rpn;
   while (p != NULL && *exec_exception_type == 0) {
     if (p->lex->type == 'v' || p->lex->type == 'x') {
       push(Stack, p->lex);
     } else if (p->lex->type == 'o') {
-      lexeme* op2 = pop(Stack);
+      lexeme *op2 = pop(Stack);
       if (op2 == NULL) {
         *exec_exception_type = 1;
         break;
       }
       double v2 = op2->type == 'x' ? x : op2->v;
-      lexeme* op1 = pop(Stack);
+      lexeme *op1 = pop(Stack);
       if (op1 == NULL) {
         *exec_exception_type = 1;
         break;
@@ -612,7 +612,7 @@ double evaluate(double x, node* lexemes_rpn, int* exec_exception_type) {
       }
 
       if (*exec_exception_type == 0) {
-        lexeme* resLex = malloc(sizeof(lexeme));
+        lexeme *resLex = malloc(sizeof(lexeme));
         resLex->type = 'v';
         resLex->v = res;
         resLex->c = '0';
@@ -621,7 +621,7 @@ double evaluate(double x, node* lexemes_rpn, int* exec_exception_type) {
         push(Stack, resLex);
       }
     } else if (p->lex->type == 'u') {
-      lexeme* op1 = pop(Stack);
+      lexeme *op1 = pop(Stack);
       if (op1 == NULL) {
         *exec_exception_type = 1;
         break;
@@ -635,7 +635,7 @@ double evaluate(double x, node* lexemes_rpn, int* exec_exception_type) {
         res = v1;
       }
 
-      lexeme* resLex = malloc(sizeof(lexeme));
+      lexeme *resLex = malloc(sizeof(lexeme));
       resLex->type = 'v';
       resLex->v = res;
       resLex->c = '0';
@@ -643,7 +643,7 @@ double evaluate(double x, node* lexemes_rpn, int* exec_exception_type) {
       garbage = add_to_end(garbage, resLex);
       push(Stack, resLex);
     } else if (p->lex->type == 'f') {
-      lexeme* op1 = pop(Stack);
+      lexeme *op1 = pop(Stack);
       if (op1 == NULL) {
         *exec_exception_type = 1;
         break;
@@ -686,7 +686,7 @@ double evaluate(double x, node* lexemes_rpn, int* exec_exception_type) {
           break;
         }
       }
-      lexeme* resLex = malloc(sizeof(lexeme));
+      lexeme *resLex = malloc(sizeof(lexeme));
       resLex->type = 'v';
       resLex->v = res;
       resLex->c = '0';
@@ -699,7 +699,7 @@ double evaluate(double x, node* lexemes_rpn, int* exec_exception_type) {
   double v = 0;
 
   if (*exec_exception_type == 0) {
-    lexeme* lex = pop(Stack);
+    lexeme *lex = pop(Stack);
     v = lex->type == 'x' ? x : lex->v;
 
     // убеждаемся что стек пуст;
@@ -715,10 +715,10 @@ double evaluate(double x, node* lexemes_rpn, int* exec_exception_type) {
   return v;
 }
 
-cordinate* graph_output_points(double xBegin, double xEnd, int points,
-                               char* expression, int* error) {
+cordinate *graph_output_points(double xBegin, double xEnd, int points,
+                               char *expression, int *error) {
   *error = 0;
-  cordinate* coordinates = (cordinate*)malloc(points * sizeof(cordinate));
+  cordinate *coordinates = (cordinate *)malloc(points * sizeof(cordinate));
   if (coordinates != NULL) {
     double width = xEnd - xBegin;
     double istep = width / (points - 1);
@@ -756,14 +756,14 @@ cordinate* graph_output_points(double xBegin, double xEnd, int points,
  * @param error 1: realloc error, 2: input syntax error
  * @return pars_list*
  */
-daynum_sum* pars_replen_and_withdrawal(char* str, int* n_pars, int* error) {
-  daynum_sum* pars_result = NULL;
+daynum_sum *pars_replen_and_withdrawal(char *str, int *n_pars, int *error) {
+  daynum_sum *pars_result = NULL;
   int pars_result_allocated = 0;
   int pars_result_length = 0;
 
   *error = 0;
   if (str != NULL) {
-    char* strcop = str;
+    char *strcop = str;
     int n = -1;
     while (*strcop != '\0' && *error == 0) {
       int daynum;
@@ -774,7 +774,7 @@ daynum_sum* pars_replen_and_withdrawal(char* str, int* n_pars, int* error) {
 
         if (pars_result_length >= pars_result_allocated) {
           pars_result_allocated += 10;
-          daynum_sum* tmp = (daynum_sum*)realloc(
+          daynum_sum *tmp = (daynum_sum *)realloc(
               pars_result, pars_result_allocated * sizeof(daynum_sum));
           if (tmp != NULL) {
             pars_result = tmp;
@@ -808,12 +808,12 @@ daynum_sum* pars_replen_and_withdrawal(char* str, int* n_pars, int* error) {
   return pars_result;
 }
 
-deposit_calculation_result* calculate_deposit(
+deposit_calculation_result *calculate_deposit(
     double deposit_amount, int period_days, double rate_per_day,
     int payment_periodicity_days, int capitalization, double tax_rate_per_year,
-    daynum_sum* replenishment, daynum_sum* withdrawals, int n_replen,
+    daynum_sum *replenishment, daynum_sum *withdrawals, int n_replen,
     int n_withd) {
-  deposit_calculation_result* deposit = NULL;
+  deposit_calculation_result *deposit = NULL;
   double deposit_amount_result = deposit_amount;
   double pay_period = 0;
   double pay = 0;
@@ -879,7 +879,7 @@ deposit_calculation_result* calculate_deposit(
   }
 
   deposit =
-      (deposit_calculation_result*)malloc(sizeof(deposit_calculation_result));
+      (deposit_calculation_result *)malloc(sizeof(deposit_calculation_result));
   if (deposit != NULL) {
     deposit->amount_end_term = deposit_amount_result;
     deposit->interest_charges = pay;
@@ -888,14 +888,13 @@ deposit_calculation_result* calculate_deposit(
   return deposit;
 }
 
-deposit_calculation_result* deposit_result(double deposit_amount,
+deposit_calculation_result *deposit_result(double deposit_amount,
                                            int period_month, double rate,
                                            double tax_rate, int periodicity,
                                            int capitalization,
-                                           char* replenishment,
-                                           char* withdrawals, int* error) {
+                                           char *replenishment,
+                                           char *withdrawals, int *error) {
   *error = 0;
-  deposit_calculation_result* result = NULL;
   int general_term = period_month * 30;
   double rate_per_day = rate / 365.0;
   int n_replenishment = 0;
@@ -916,8 +915,8 @@ deposit_calculation_result* deposit_result(double deposit_amount,
   } else if (periodicity == 6) {
     periodicity_day = general_term;
   }
-  daynum_sum* replenishment_struct = NULL;
-  daynum_sum* withdrawals_struct = NULL;
+  daynum_sum *replenishment_struct = NULL;
+  daynum_sum *withdrawals_struct = NULL;
   if (replenishment != NULL) {
     replenishment_struct =
         pars_replen_and_withdrawal(replenishment, &n_replenishment, error);
