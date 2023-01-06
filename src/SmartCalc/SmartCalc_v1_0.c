@@ -895,7 +895,6 @@ deposit_calculation_result *deposit_result(double deposit_amount,
                                            char *replenishment,
                                            char *withdrawals, int *error) {
   *error = 0;
-  deposit_calculation_result *result = NULL;
   int general_term = period_month * 30;
   double rate_per_day = rate / 365.0;
   int n_replenishment = 0;

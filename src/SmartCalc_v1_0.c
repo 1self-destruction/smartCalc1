@@ -115,6 +115,7 @@ node *add_to_end(node *root, lexeme *lex) {
   return root;
 }
 
+
 void del_list(node *root, int flag_free_elements) {
   node *p = root;
   while (p != NULL) {
@@ -481,7 +482,6 @@ node *reverse_polish_notation(node *ipn, int *syntax_exception_type) {
       */
       while (is_empty(Stack) == 0) {
         lexeme *op2 = peek(Stack);
-
         if (op2->type == 'o' || op2->type == 'u' || op2->type == 'f') {
           pop(Stack);
           result = add_to_end(result, op2);
@@ -634,7 +634,6 @@ double evaluate(double x, node *lexemes_rpn, int *exec_exception_type) {
       } else {
         res = v1;
       }
-
       lexeme *resLex = malloc(sizeof(lexeme));
       resLex->type = 'v';
       resLex->v = res;
