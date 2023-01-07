@@ -5,9 +5,10 @@
 
 #include <QMainWindow>
 
-#include "credit.h"
-#include "graph.h"
 #include "input_x.h"
+#include "graph.h"
+#include "credit.h"
+#include "deposit.h"
 
 extern "C" {
 #include "SmartCalc_v1_0.h"
@@ -37,11 +38,13 @@ class MainWindow : public QMainWindow {
   void on_pushButton_dot_clicked();
   void on_pushButton_credit_clicked();
   void on_pushButton_graph_clicked();
+  void on_pushButton_deposit_clicked();
 
- private:
+private:
   Ui::MainWindow *ui;
   input_x *input;
   credit *credit_calc;
+  deposit *deposit_calc;
   graph *graph_input;
 };
 #endif  // MAINWINDOW_H

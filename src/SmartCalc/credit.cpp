@@ -4,7 +4,7 @@
 
 credit::credit(QWidget *parent) : QDialog(parent), ui(new Ui::credit) {
   ui->setupUi(this);
-  setWindowTitle("Credit calculator");
+  setWindowTitle("CreditCalc");
 
   ui->radioButton_annuity->setChecked(true);
   ui->label_result_4->setAlignment(Qt::AlignHCenter | Qt::AlignTop);
@@ -20,92 +20,23 @@ credit::~credit() { delete ui; }
 void credit::on_pushButton_exit_clicked() { this->close(); }
 
 void credit::on_pushButton_calculate_clicked() {
-  QString Style =
-      "QLineEdit {\
-                        background-color: rgb(30, 30, 30);\
-                        color: white;\
-                        border-radius: 10px;\
-                      }\
-                      QLineEdit:focus {\
-                          border: 1px solid rgb(0, 200, 255);\
-                          background-color: rgb(0, 20, 26);\
-                      }";
-  QString SetStyle =
-      "QLineEdit {\
-                            background-color: rgb(70, 0, 0);\
-                            color: white;\
-                            border-radius: 10px;\
-                            border: 1 solid red;\
-                          }";
-  QString StylBar =
-      "QDialog {\
-                            background-color: rgb(0, 0, 0);\
+    QString Style =
+        "QLineEdit {\
+                          background-color: rgb(30, 30, 30);\
+                          color: white;\
+                          border-radius: 10px;\
                         }\
-                        QScrollArea {\
-                            border: none;\
-                        }\
-                        QScrollBar:vertical {\
-                            width: 0px;\
+                        QLineEdit:focus {\
+                            border: 1px solid rgb(0, 200, 255);\
+                            background-color: rgb(0, 20, 26);\
                         }";
-  QString SetStyleBar =
-      "QDialog {\
-                            background-color: rgb(0, 0, 0);\
-                         }\
-                         QScrollArea {\
-                            border: none;\
-                         }\
-                         QScrollBar:Vertical {\
-                            background-color: rgb(50, 50, 50);\
-                            border: none;\
-                            width: 13px;\
-                            border-radius: 5px;\
-                            margin: 5px 0 5px 0;\
-                         }\
-                         QScrollBar::handle:vertical {\
-                             background-color: rgb(80, 80, 122);\
-                             min-height: 30px;\
-                             border-radius: 5px;\
-                         }\
-                         QScrollBar::handle:vertical:hover{	\
-                             background-color: rgb(255, 0, 127);\
-                         }\
-                         QScrollBar::handle:vertical:pressed {\
-                             background-color: rgb(185, 0, 92);\
-                         }\
-                         QScrollBar::sub-line:vertical {\
-                             border: none;\
-                             background-color: rgb(59, 59, 90);\
-                             height: 15px;\
-                             border-top-left-radius: 5px;\
-                             border-top-right-radius: 5px;\
-                             subcontrol-position: top;\
-                         }\
-                         QScrollBar::sub-line:vertical:hover {\
-                             background-color: rgb(255, 0, 127);\
-                         }\
-                         QScrollBar::sub-line:vertical:pressed {\
-                             background-color: rgb(185, 0, 92);\
-                         }\
-                         QScrollBar::add-line:vertical {\
-                             border: none;\
-                             background-color: rgb(59, 59, 90);\
-                             height: 15px;\
-                             border-bottom-left-radius: 5px;\
-                             border-bottom-right-radius: 5px;\
-                             subcontrol-position: bottom;\
-                         }\
-                         QScrollBar::add-line:vertical:hover {\
-                             background-color: rgb(255, 0, 127);\
-                         }\
-                         QScrollBar::add-line:vertical:pressed {\
-                             background-color: rgb(185, 0, 92);\
-                         }\
-                         QScrollBar::up-arrow:vertical, QScrollBar::down-arrow:vertical {\
-                             background: none;\
-                         }\
-                         QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {\
-                             background: none;\
-                         }";
+    QString SetStyle =
+        "QLineEdit {\
+                              background-color: rgb(70, 0, 0);\
+                              color: white;\
+                              border-radius: 10px;\
+                              border: 1 solid red;\
+                            }";
   bool ok1, ok2, ok3;
   double amount, term, rate;
   QString Amount = ui->lineEdit_1->text();
@@ -130,6 +61,8 @@ void credit::on_pushButton_calculate_clicked() {
     } else {
       ui->lineEdit_3->setStyleSheet(Style);
     }
+  }
+  if (!ok1 || !ok2 || !ok3) {
     ui->label_result_1->setText("");
     ui->label_result_2->setText("");
     ui->label_result_3->setText("");
@@ -138,14 +71,11 @@ void credit::on_pushButton_calculate_clicked() {
     ui->label_calculation_results->setText("");
     ui->label_overpayment_loan->setText("");
     ui->label_total_payment->setText("");
-    this->setStyleSheet(StylBar);
   } else {
     setlocale(LC_ALL, "C");
     ui->lineEdit_1->setStyleSheet(Style);
     ui->lineEdit_2->setStyleSheet(Style);
     ui->lineEdit_3->setStyleSheet(Style);
-    ui->label_result_4->setText("");
-    this->setStyleSheet(StylBar);
     ui->label_monthly_payment->setText("Monthly payment:");
     ui->label_calculation_results->setText("Calculation results");
     ui->label_overpayment_loan->setText("Overpayment on a loan:");
@@ -249,7 +179,6 @@ void credit::on_pushButton_calculate_clicked() {
         resultStr.append(QString::number(res, 'f', 2));
         resultStr.append("\n");
       }
-      this->setStyleSheet(SetStyleBar);
       ui->label_result_1->setText(QString::number(total_paid, 'f', 2));
       ui->scrollArea->raise();
       ui->label_result_4->setText(resultStr);
