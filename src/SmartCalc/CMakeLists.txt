@@ -31,6 +31,9 @@ set(PROJECT_SOURCES
         credit.cpp
         credit.h
         credit.ui
+        deposit.cpp
+        deposit.h
+        deposit.ui
         SmartCalc_v1_0.c
         SmartCalc_v1_0.h
 )

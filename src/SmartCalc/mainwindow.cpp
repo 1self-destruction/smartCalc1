@@ -221,3 +221,10 @@ void MainWindow::on_pushButton_graph_clicked() {
     ui->pushButton_equal->setChecked(true);
   }
 }
+
+void MainWindow::on_pushButton_deposit_clicked() {
+    deposit_calc = new deposit(this);
+    deposit_calc->setModal(true);
+    deposit_calc->exec();
+}
+

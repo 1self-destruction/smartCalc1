@@ -20,6 +20,7 @@ class credit : public QDialog {
 
  private slots:
   void on_pushButton_exit_clicked();
+  void on_pushButton_calculate_clicked();
 
  private:
   Ui::credit *ui;
